@@ -24,3 +24,15 @@ function mergeZipper(array1, array2) {
   }
   return mergedArray
 }
+
+/**
+ *  Calculates the greatest common denominator (gcd) of an array of numbers
+ */
+function arrayGcd (arr) {
+  function gcd (x, y) {
+    return !y ? x : gcd(y, x % y);
+  }
+  return arr.reduce(function (a, b) {
+    gcd(a, b);
+  })
+}
