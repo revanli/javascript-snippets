@@ -4,7 +4,6 @@
  * @date 2017-12-21
  */
 
-
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     //AMD
@@ -29,7 +28,7 @@
 
     this.options = {
       baseUrl: './', // 基路径
-      maxLoadTime: 8000, // 用户能忍受的最长加载时间
+      maxLoadTime: 4000, // 用户能忍受的最长加载时间
       onStart: null, // 加载开始回调函数, 传入参数total
       onProgress: null, // 正在加载回调函数，传入参数currentIndex, total
       onComplete: null // 加载完毕回调函数，传入参数total
@@ -51,27 +50,30 @@
     var self = this
     this.status = 1
 
-    // 超时函数
+    // 超时函数，超过预设时间后清除不再加载资源
     this.countDown()
 
     this.source.forEach(function (srcItem) {
-      var fileType = srcItem.replace(/[#\?].*$/, '').substr(srcItem.lastIndexOf('.') + 1).toLowerCase();
+      var fullSrc = ''
 
-      var fullSrc = (srcItem.indexOf('http://') == 0 || srcItem.indexOf('https://') == 0) ? srcItem : this.options.baseUrl + srcItem;
+      if (this.options.baseUrl.indexOf('//') == 0) {
+        fullSrc = this.options.baseUrl + srcItem;
+      } else if (srcItem.indexOf('//') == 0) {
+        fullSrc = window.location.protocol + srcItem
+      } else if (srcItem.indexOf('http://') == 0 || srcItem.indexOf('https://') == 0) {
+        fullSrc = srcItem
+      } else {
+        fullSrc = this.options.baseUrl + srcItem;
+      }
 
-      switch (fileType) {
-        case 'js':
-          this.script.call(this, fullSrc);
-          break;
-        case 'css':
-          this.style.call(this, fullSrc);
-          break;
-        case "jpg":
-        case "gif":
-        case "png":
-        case "jpeg":
-          this.image.call(this, fullSrc);
-          break;
+      if (/jpg|gif|png|jpeg/i.test(srcItem)) {
+        this.image.call(this, fullSrc)
+      } else if (/css/i.test(srcItem)) {
+        this.style.call(this, fullSrc)
+      } else if (/js/i.test(srcItem)) {
+        this.script.call(this, fullSrc)
+      } else {
+        console.log('不支持的文件格式', srcItem)
       }
     }.bind(this))
 
