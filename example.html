@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>example</title>
+</head>
+<body>
+<script src='./dist/util.js'></script>
+<script>
+  Promise.resolve([1, 2, 3])
+    .then(call('map', x => 2 * x))
+    .then(console.log)
+  const map = call.bind(null, 'map');
+  Promise.resolve([1, 2, 3])
+    .then(map(x => 2 * x))
+    .then(console.log)
+</script>
+</body>
+</html>

@@ -36,3 +36,31 @@ function arrayGcd (arr) {
     gcd(a, b);
   })
 }
+
+/**
+ * Given a key and arguments, call them when given a context. Primarily userful
+ * in compositio. Use a closure to call a stored key with stored arguments
+ */
+const call = (key, ...args) => context => context[key](...args)
+
+/**
+ * Changes a function that accepts an array into a variadic function.
+ * Given a function, return a closure that collects all inputs into an array-accepting function.
+ */
+const collectInfo = fn => (...args) => fn(args)
+
+/**
+ * Flip takes a function as an argument, then makes the first argument the last
+ * Return a closure that takes variadic inputs, and splices the last argument to make it the first argument before applying the rest.
+ */
+const flip = fn => (...args) => fn(args.pop(), ...args)
+
+/**
+ * pipeFunctions
+ * Use Array.reduce() with the spread operator(...) to perform left-to-right function composition
+ */
+const pipeFunctions = (...fns) => fns.reduce((f, g) => (...args) => g(f(...args)))
+
+window.call = call
+
+
