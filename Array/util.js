@@ -61,6 +61,40 @@ const flip = fn => (...args) => fn(args.pop(), ...args)
  */
 const pipeFunctions = (...fns) => fns.reduce((f, g) => (...args) => g(f(...args)))
 
-window.call = call
+/**
+ * promisify
+ * Converts an asynchronous function to return a promise
+ * 
+ */
+const promisify = func => (...args) => 
+  new Promise((resolve, reject) => 
+    func(...args, (err, result) => (err ? reject(err) : resolve(result)))
+  )
 
+/**
+ * spreadOver
+ * Takes a variadic function and returns a closure that accepts an array of arguments to map to the inputs of the function.
+ */
+const spreadOver = fn => argsArr => fn(...argsArr)
+
+/**
+ * chunk
+ * Chunks an array into smaller arrays of a specified size
+ * 
+ */
+const chunk = (arr, size) => 
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => 
+    arr.slice(i * size, i * size + size)
+  )
+
+/**
+ * Removes falsely values from an array
+ * 
+ */
+const compact = arr => arr.filter(Boolean)
+
+/**
+ * counts the occurrences of a value in an array
+ */
+const countOccvrrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a + 0), 0)
 
