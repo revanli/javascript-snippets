@@ -5,15 +5,32 @@
   <title>example</title>
 </head>
 <body>
-<script src='./dist/util.js'></script>
+<script src='./dist/utils.js'></script>
 <script>
-  Promise.resolve([1, 2, 3])
-    .then(call('map', x => 2 * x))
-    .then(console.log)
-  const map = call.bind(null, 'map');
-  Promise.resolve([1, 2, 3])
-    .then(map(x => 2 * x))
-    .then(console.log)
+  // Promise.resolve([1, 2, 3])
+  //   .then(_utils.call('map', x => 2 * x))
+  //   .then(console.log)
+  // const map = _utils.call.bind(null, 'map');
+  // Promise.resolve([1, 2, 3])
+  //   .then(map(x => 2 * x))
+  //   .then(console.log)
+  // const Pall = _utils.collectInto(Promise.all.bind(Promise));
+  // let p1 = Promise.resolve(1);
+  // let p2 = Promise.resolve(2);
+  // let p3 = new Promise(resolve => setTimeout(resolve, 2000, 3));
+  // Pall(p1, p2, p3).then(console.log);
+  // const add = x => x + 5
+  // const multiply = (x, y) => x * y;
+  // const multiplyAndAdd = _utils.pipeFunctions(multiply, add);
+  // console.log(multiplyAndAdd(5, 2));
+  // const delay = _utils.promisify((d, cb) => setTimeout(cb, d));
+  // delay(2000).then(() => console.log('Hi!'));
+  // const arrayMax = _utils.spreadOver(Math.max);
+  // console.log(arrayMax([1, 2, 3]));
+  // console.log(_utils.chunk([1, 2, 3, 4, 5], 2)); // [[1,2],[3,4],[5]]
+  // console.log(_utils.compact([0, 1, false, 2, '', 3, 'a', 'e' * 23, NaN, 's', 34]));
+  console.log(_utils.countBy([6.1, 4.2, 6.3], Math.floor)); // {4: 1, 6: 2}
+  console.log(_utils.countBy(['one', 'two', 'three'], 'length')); // {3: 2, 5: 1})
 </script>
 </body>
 </html>

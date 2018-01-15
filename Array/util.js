@@ -96,5 +96,10 @@ const compact = arr => arr.filter(Boolean)
 /**
  * counts the occurrences of a value in an array
  */
-const countOccvrrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a + 0), 0)
+const countOccurrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a + 0), 0)
+
+/**
+ * deep flattens an array
+ */
+const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFlatten(v) : v)))
 
