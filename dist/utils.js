@@ -105,8 +105,53 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     }, {});
   };
 
+  var countOccurences = function countOccurences(arr, val) {
+    return arr.reduce(function (a, v) {
+      return v === val ? a + 1 : a + 0;
+    }, 0);
+  };
+
+  var deepFlatten = function deepFlatten(arr) {
+    var _ref;
+
+    return (_ref = []).concat.apply(_ref, _toConsumableArray(arr.map(function (v) {
+      return Array.isArray(v) ? deepFlatten(v) : v;
+    })));
+  };
+
+  var difference = function difference(a, b) {
+    var s = new Set(b);
+    return a.filter(function (x) {
+      return !s.has(x);
+    });
+  };
+
+  var differenceWith = function differenceWith(arr, val, comp) {
+    return arr.filter(function (a) {
+      return val.findIndex(function (b) {
+        return comp(a, b);
+      }) === -1;
+    });
+  };
+
+  var distinctValuesOfArray = function distinctValuesOfArray(arr) {
+    return [].concat(_toConsumableArray(new Set(arr)));
+  };
+
+  var dropElements = function dropElements(arr, func) {
+    while (arr.length > 0 && !func(arr[0])) {
+      arr = arr.slice(1);
+    }return arr;
+  };
+
+  var dropRight = function dropRight(arr) {
+    var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    return arr.slice(0, -n);
+  };
+
   return {
     call: call, collectInto: collectInto, flip: flip, pipeFunctions: pipeFunctions, promisify: promisify, spreadOver: spreadOver, chunk: chunk, compact: compact,
-    countBy: countBy
+    countBy: countBy, countOccurences: countOccurences, deepFlatten: deepFlatten, difference: difference, differenceWith: differenceWith, distinctValuesOfArray: distinctValuesOfArray,
+    dropElements: dropElements, dropRight: dropRight
   };
 });

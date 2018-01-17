@@ -46,9 +46,30 @@
       return acc;
     }, {});
 
+  const countOccurences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a + 0), 0);
+
+  const deepFlatten = arr => [].concat(...arr.map(v => Array.isArray(v) ? deepFlatten(v) : v));
+
+  const difference = (a, b) => {
+    const s = new Set(b);
+    return a.filter(x => !s.has(x));
+  }
+
+  const differenceWith = (arr, val, comp) => arr.filter(a => val.findIndex(b => comp(a, b)) === -1);
+
+  const distinctValuesOfArray = arr => [...new Set(arr)];
+
+  const dropElements = (arr, func) => {
+    while (arr.length > 0 && !func(arr[0])) arr = arr.slice(1)
+    return arr;
+  }
+
+  const dropRight = (arr, n = 1) => arr.slice(0, -n)
+
   return {
     call, collectInto, flip, pipeFunctions, promisify, spreadOver, chunk, compact,
-    countBy
+    countBy, countOccurences, deepFlatten, difference, differenceWith, distinctValuesOfArray,
+    dropElements, dropRight
   };
 
 })));
