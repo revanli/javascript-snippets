@@ -26,6 +26,38 @@ function mergeZipper(array1, array2) {
 }
 
 /**
+ * detect whether a parameter is Array
+ */
+function isArray (param) {
+  if (Array.isArray) {
+    return Array.isArray(param);
+  }
+  var objectToStringFn = Object.prototype.toString;
+  var arrayToStringResult = objectToStringFn.call([]);
+
+  return objectToStringFn.call(param) === arrayToStringResult;
+}
+
+/**
+ * detect whether patameter is Array
+ * @return {Function} return a function can use
+ *
+ * usage:
+ * var a = ['test'], isArray(a) // true
+ */
+var isArray = (function () {
+  if (Array.isArray) {
+    return Array.isArray
+  }
+  var objectToStringFn = Object.prototype.toString;
+  var arrayToStringResult = objectToStringFn.call([]);
+
+  return function (subject) {
+    return objectToStringFn.call(subject) === arrayToStringResult;
+  }
+}());
+
+/**
  *  Calculates the greatest common denominator (gcd) of an array of numbers
  */
 function arrayGcd (arr) {
@@ -38,68 +70,17 @@ function arrayGcd (arr) {
 }
 
 /**
- * Given a key and arguments, call them when given a context. Primarily userful
- * in compositio. Use a closure to call a stored key with stored arguments
+ * chunk Array into pieces with same number
  */
-const call = (key, ...args) => context => context[key](...args)
+function chunkArr (arr, chunk) {
+  if (!chunk) {
+    return arr
+  }
+  var i, j, result = [];
+  for (i = 0, j = arr.length; i < j; i+=chunk) {
+    result.push(arr.slice(i, i+chunk));
+  }
+  return result
+}
 
-/**
- * Changes a function that accepts an array into a variadic function.
- * Given a function, return a closure that collects all inputs into an array-accepting function.
- */
-const collectInfo = fn => (...args) => fn(args)
-
-/**
- * Flip takes a function as an argument, then makes the first argument the last
- * Return a closure that takes variadic inputs, and splices the last argument to make it the first argument before applying the rest.
- */
-const flip = fn => (...args) => fn(args.pop(), ...args)
-
-/**
- * pipeFunctions
- * Use Array.reduce() with the spread operator(...) to perform left-to-right function composition
- */
-const pipeFunctions = (...fns) => fns.reduce((f, g) => (...args) => g(f(...args)))
-
-/**
- * promisify
- * Converts an asynchronous function to return a promise
- * 
- */
-const promisify = func => (...args) => 
-  new Promise((resolve, reject) => 
-    func(...args, (err, result) => (err ? reject(err) : resolve(result)))
-  )
-
-/**
- * spreadOver
- * Takes a variadic function and returns a closure that accepts an array of arguments to map to the inputs of the function.
- */
-const spreadOver = fn => argsArr => fn(...argsArr)
-
-/**
- * chunk
- * Chunks an array into smaller arrays of a specified size
- * 
- */
-const chunk = (arr, size) => 
-  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => 
-    arr.slice(i * size, i * size + size)
-  )
-
-/**
- * Removes falsely values from an array
- * 
- */
-const compact = arr => arr.filter(Boolean)
-
-/**
- * counts the occurrences of a value in an array
- */
-const countOccurrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a + 0), 0)
-
-/**
- * deep flattens an array
- */
-const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFlatten(v) : v)))
 
